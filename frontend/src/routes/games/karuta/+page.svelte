@@ -2,10 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { vocabStore } from '$lib/stores/vocabStore';
-	import { X, CircleAlert, Timer, Dog } from 'lucide-svelte';
-	import BaseCard from '$lib/components/ui/BaseCard.svelte';
+	import { X, Timer } from 'lucide-svelte';
+	import PageContainer from '$lib/components/ui/PageContainer.svelte';
+	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import ErrorState from '$lib/components/ui/ErrorState.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
-	import Header from '$lib/components/ui/Header.svelte';
 
 	interface Card {
 		id: string; // 単語のID（ペア判定用）
@@ -151,100 +152,90 @@
 	$: enCards = cards.filter((c) => c.type === 'en');
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-12">
-	<Header />
-
-	<main class="max-w-4xl mx-auto px-6 py-10">
-		{#if gameStatus === 'loading'}
-			<div class="flex flex-col items-center justify-center py-40">
-				<Dog size={32} color="#55D5DD" class="animate-spin" />
-				<p class="mt-4 font-bold text-[#55D5DD]">カードを並べています...</p>
+<PageContainer showHeader={true} className="pb-12">
+	{#if gameStatus === 'loading'}
+		<LoadingSpinner message="カードを並べています..." />
+	{:else if gameStatus === 'error'}
+		<ErrorState
+			title="単語が足りません"
+			message="カルタを始めるには最低3単語の登録が必要です。"
+			buttonText="単語を抽出する"
+			onButtonClick={() => goto('/extract')}
+		/>
+	{:else}
+		<div class="mb-6 flex items-center justify-between">
+			<a href="/">
+				<X size={24} class="mr-1" />
+			</a>
+			<div class="flex gap-1">
+				<Timer size={24} color="#55D5DD" />
+				<span class="text-xl font-bold">{formatTime(time)}</span>
 			</div>
-		{:else if gameStatus === 'error'}
-			<BaseCard className="text-center">
-				<CircleAlert size={60} color="#FF5555" class="mx-auto" />
-				<h2 class="my-4 text-2xl font-bold text-slate-800">単語が足りません</h2>
-				<p class="mb-8 text-slate-500">カルタを始めるには最低3単語の登録が必要です。</p>
-				<CustomButton variant="primary" on:click={() => goto('/extract')}>
-					単語を抽出する
-				</CustomButton>
-			</BaseCard>
-		{:else}
-			<div class="mb-6 flex items-center justify-between">
-				<a href="/">
-					<X size={24} class="mr-1" />
-				</a>
-				<div class="flex gap-1">
-					<Timer size={24} color="#55D5DD" />
-					<span class="text-xl font-bold">{formatTime(time)}</span>
-				</div>
-				<div class="font-bold text-gray-400">
-					Match: <span class="text-xl text-[#55D5DD]">{matchesCount}</span> / {gameWords.length}
-				</div>
+			<div class="font-bold text-gray-400">
+				Match: <span class="text-xl text-[#55D5DD]">{matchesCount}</span> / {gameWords.length}
 			</div>
+		</div>
 
-			<div class="space-y-12">
-				<section>
-					<div class="mb-4 flex items-center gap-3">
-						<div class="h-6 w-1 rounded-full bg-[#55D5DD]"></div>
-						<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500">Japanese</h2>
-					</div>
-					<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
-						{#each jpCards as card (card.uniqueId)}
-							<button
-								on:click={() => handleCardClick(card)}
-								class="flex h-24 items-center justify-center rounded-2xl border-2 p-3 text-center text-lg font-bold transition-all duration-300
+		<div class="space-y-12">
+			<section>
+				<div class="mb-4 flex items-center gap-3">
+					<div class="h-6 w-1 rounded-full bg-[#55D5DD]"></div>
+					<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500">Japanese</h2>
+				</div>
+				<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
+					{#each jpCards as card (card.uniqueId)}
+						<button
+							on:click={() => handleCardClick(card)}
+							class="flex h-24 items-center justify-center rounded-2xl border-2 p-3 text-center text-lg font-bold transition-all duration-300
 								{card.status === 'idle'
-									? 'border-transparent bg-white text-gray-700 hover:border-[#55D5DD]/50'
-									: ''}
+								? 'border-transparent bg-white text-gray-700 hover:border-[#55D5DD]/50'
+								: ''}
 								{card.status === 'selected' ? 'scale-105 border-[#55D5DD] bg-[#55D5DD] text-white' : ''}
 								{card.status === 'matched' ? 'opacity-0 pointer-events-none' : ''}
 								{card.status === 'wrong' ? 'animate-shake border-red-400 bg-red-400 text-white' : ''}"
-							>
-								{card.content}
-							</button>
-						{/each}
-					</div>
-				</section>
-
-				<div class="relative py-4">
-					<div class="absolute inset-0 flex items-center" aria-hidden="true">
-						<div class="w-full border-t border-dashed border-gray-300"></div>
-					</div>
-					<div class="relative flex justify-center">
-						<span
-							class="bg-[#F0F9FA] px-4 text-xs font-black uppercase tracking-widest text-gray-400"
-							>Match the pairs</span
 						>
-					</div>
+							{card.content}
+						</button>
+					{/each}
 				</div>
+			</section>
 
-				<section>
-					<div class="mb-4 flex items-center gap-3">
-						<div class="h-6 w-1 rounded-full bg-[#FF5555]"></div>
-						<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500">English</h2>
-					</div>
-					<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
-						{#each enCards as card (card.uniqueId)}
-							<button
-								on:click={() => handleCardClick(card)}
-								class="flex h-24 items-center justify-center rounded-2xl border-2 p-3 text-center text-lg font-bold transition-all duration-300
+			<div class="relative py-4">
+				<div class="absolute inset-0 flex items-center" aria-hidden="true">
+					<div class="w-full border-t border-dashed border-gray-300"></div>
+				</div>
+				<div class="relative flex justify-center">
+					<span class="bg-[#F0F9FA] px-4 text-xs font-black uppercase tracking-widest text-gray-400"
+						>Match the pairs</span
+					>
+				</div>
+			</div>
+
+			<section>
+				<div class="mb-4 flex items-center gap-3">
+					<div class="h-6 w-1 rounded-full bg-[#FF5555]"></div>
+					<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500">English</h2>
+				</div>
+				<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
+					{#each enCards as card (card.uniqueId)}
+						<button
+							on:click={() => handleCardClick(card)}
+							class="flex h-24 items-center justify-center rounded-2xl border-2 p-3 text-center text-lg font-bold transition-all duration-300
 								{card.status === 'idle'
-									? 'border-transparent bg-white text-gray-700 hover:border-[#FF5555]/50'
-									: ''}
+								? 'border-transparent bg-white text-gray-700 hover:border-[#FF5555]/50'
+								: ''}
 								{card.status === 'selected' ? 'scale-105 border-[#FF5555] bg-[#FF5555] text-white' : ''}
 								{card.status === 'matched' ? 'opacity-0 pointer-events-none' : ''}
 								{card.status === 'wrong' ? 'animate-shake border-red-400 bg-red-400 text-white' : ''}"
-							>
-								{card.content}
-							</button>
-						{/each}
-					</div>
-				</section>
-			</div>
-		{/if}
-	</main>
-</div>
+						>
+							{card.content}
+						</button>
+					{/each}
+				</div>
+			</section>
+		</div>
+	{/if}
+</PageContainer>
 
 <style>
 	:global(.animate-shake) {
