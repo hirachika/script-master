@@ -49,13 +49,29 @@ cd frontend
 npm install
 ```
 
-3. 開発サーバーを起動
+3. 環境変数の設定（オプション）
+
+デフォルトの設定で動作しますが、カスタマイズしたい場合は`.env`ファイルを作成します。
+
+```bash
+cp .env.example .env
+# .envファイルを編集してAPI設定をカスタマイズ
+```
+
+`.env.example`に記載されている設定項目：
+- `PUBLIC_TRANSLATION_API_URL`: 翻訳APIのURL
+- `PUBLIC_DICTIONARY_API_URL`: 辞書APIのURL
+- `PUBLIC_API_TIMEOUT`: APIタイムアウト（ミリ秒）
+- `PUBLIC_API_RETRY_COUNT`: APIリトライ回数
+- `PUBLIC_API_RETRY_DELAY`: リトライ間隔（ミリ秒）
+
+4. 開発サーバーを起動
 
 ```bash
 npm run dev
 ```
 
-4. ブラウザで http://localhost:5173 を開く
+5. ブラウザで http://localhost:5173 を開く
 
 ## プロジェクト構造
 
