@@ -4,10 +4,12 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { vocabStore } from '$lib/stores/vocabStore';
-	import { X, ChevronRight, CircleAlert, Dog } from 'lucide-svelte';
+	import { X, ChevronRight } from 'lucide-svelte';
+	import PageContainer from '$lib/components/ui/PageContainer.svelte';
+	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import ErrorState from '$lib/components/ui/ErrorState.svelte';
 	import BaseCard from '$lib/components/ui/BaseCard.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
-	import Header from '$lib/components/ui/Header.svelte';
 	import SpeakButton from '$lib/components/ui/SpeakButton.svelte';
 
 	let currentIndex = 0;
@@ -60,85 +62,76 @@
 	}
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-12">
-	<Header />
-
-	<main class="max-w-4xl mx-auto px-6 py-10">
-		{#if !isInitialized}
-			<div class="flex flex-col items-center justify-center py-40">
-				<Dog size={32} color="#55D5DD" class="animate-spin" />
-				<p class="mt-4 font-bold text-[#55D5DD]">クイズを準備しています...</p>
+<PageContainer showHeader={true} className="pb-12">
+	{#if !isInitialized}
+		<LoadingSpinner message="クイズを準備しています..." />
+	{:else if questions.length === 0}
+		<ErrorState
+			title="単語が足りません"
+			message="クイズを始めるには最低4単語の登録が必要です。"
+			buttonText="単語を抽出する"
+			onButtonClick={() => goto('/extract')}
+		/>
+	{:else if currentQuestion}
+		<div class="mb-12 flex items-center gap-6">
+			<a href="/">
+				<X size={24} class="mr-1" />
+			</a>
+			<div class="h-3 flex-grow overflow-hidden rounded-full bg-gray-200">
+				<div
+					class="h-full bg-[#FF5555] transition-all duration-500"
+					style="width: {progress}%"
+				></div>
 			</div>
-		{:else if questions.length === 0}
-			<BaseCard className="text-center">
-				<CircleAlert size={60} color="#FF5555" class="mx-auto" />
-				<h2 class="my-4 text-2xl font-bold text-slate-800">単語が足りません</h2>
-				<p class="mb-8 text-slate-500">クイズを始めるには最低4単語の登録が必要です。</p>
-				<CustomButton variant="primary" on:click={() => goto('/extract')}>
-					単語を抽出する
-				</CustomButton>
-			</BaseCard>
-		{:else if currentQuestion}
-			<div class="mb-12 flex items-center gap-6">
-				<a href="/">
-					<X size={24} class="mr-1" />
-				</a>
-				<div class="h-3 flex-grow overflow-hidden rounded-full bg-gray-200">
-					<div
-						class="h-full bg-[#FF5555] transition-all duration-500"
-						style="width: {progress}%"
-					></div>
+			<span class="whitespace-nowrap text-sm font-bold text-gray-500">
+				{currentIndex + 1} / {questions.length}
+			</span>
+		</div>
+
+		<div class="mx-auto max-w-xl">
+			{#key currentIndex}
+				<BaseCard className="text-center mb-4">
+					<SpeakButton text={currentQuestion.word} size="lg" color="red" className="mx-auto" />
+					<h2 class="my-2 text-5xl font-black text-gray-900">{currentQuestion.word}</h2>
+				</BaseCard>
+			{/key}
+
+			<div class="grid grid-cols-1 gap-4">
+				{#each currentQuestion.options as option}
+					<button
+						on:click={() => handleSelect(option)}
+						disabled={isAnswered}
+						class="group relative w-full rounded-2xl border-2 p-6 text-left text-xl font-bold transition-all
+					{isAnswered && option === currentQuestion.answer
+							? 'border-green-500 bg-green-50 text-green-700'
+							: ''}
+					{isAnswered && selectedOption === option && option !== currentQuestion.answer
+							? 'border-red-500 bg-red-50 text-red-700'
+							: ''}
+				{!isAnswered ? 'border-gray-100 bg-white hover:border-[#FF5555] hover:shadow-md' : ''}
+					{isAnswered && option !== currentQuestion.answer && selectedOption !== option
+							? 'opacity-50 border-gray-100 bg-white'
+							: ''}"
+					>
+						<div class="flex items-center justify-between">
+							<span>{option}</span>
+							{#if isAnswered && option === currentQuestion.answer}
+								<div class="font-bold text-green-500">✓ 正解</div>
+							{:else if isAnswered && selectedOption === option && option !== currentQuestion.answer}
+								<div class="font-bold text-red-500">✕ 不正解</div>
+							{/if}
+						</div>
+					</button>
+				{/each}
+			</div>
+			{#if isAnswered}
+				<div in:fade={{ duration: 200 }} class="mt-8">
+					<CustomButton variant="primary" size="lg" on:click={nextQuestion}>
+						{currentIndex < questions.length - 1 ? '次の問題へ' : '結果を見る'}
+						<ChevronRight size={24} class="mr-1" />
+					</CustomButton>
 				</div>
-				<span class="whitespace-nowrap text-sm font-bold text-gray-500">
-					{currentIndex + 1} / {questions.length}
-				</span>
-			</div>
-
-			<div class="mx-auto max-w-xl">
-				{#key currentIndex}
-					<BaseCard className="text-center mb-4">
-						<SpeakButton text={currentQuestion.word} size="lg" color="red" className="mx-auto" />
-						<h2 class="my-2 text-5xl font-black text-gray-900">{currentQuestion.word}</h2>
-					</BaseCard>
-				{/key}
-
-				<div class="grid grid-cols-1 gap-4">
-					{#each currentQuestion.options as option}
-						<button
-							on:click={() => handleSelect(option)}
-							disabled={isAnswered}
-							class="group relative w-full rounded-2xl border-2 p-6 text-left text-xl font-bold transition-all
-						{isAnswered && option === currentQuestion.answer
-								? 'border-green-500 bg-green-50 text-green-700'
-								: ''}
-						{isAnswered && selectedOption === option && option !== currentQuestion.answer
-								? 'border-red-500 bg-red-50 text-red-700'
-								: ''}
-					{!isAnswered ? 'border-gray-100 bg-white hover:border-[#FF5555] hover:shadow-md' : ''}
-						{isAnswered && option !== currentQuestion.answer && selectedOption !== option
-								? 'opacity-50 border-gray-100 bg-white'
-								: ''}"
-						>
-							<div class="flex items-center justify-between">
-								<span>{option}</span>
-								{#if isAnswered && option === currentQuestion.answer}
-									<div class="font-bold text-green-500">✓ 正解</div>
-								{:else if isAnswered && selectedOption === option && option !== currentQuestion.answer}
-									<div class="font-bold text-red-500">✕ 不正解</div>
-								{/if}
-							</div>
-						</button>
-					{/each}
-				</div>
-				{#if isAnswered}
-					<div in:fade={{ duration: 200 }} class="mt-8">
-						<CustomButton variant="primary" size="lg" on:click={nextQuestion}>
-							{currentIndex < questions.length - 1 ? '次の問題へ' : '結果を見る'}
-							<ChevronRight size={24} class="mr-1" />
-						</CustomButton>
-					</div>
-				{/if}
-			</div>
-		{/if}
-	</main>
-</div>
+			{/if}
+		</div>
+	{/if}
+</PageContainer>

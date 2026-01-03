@@ -2,10 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { vocabStore } from '$lib/stores/vocabStore';
-	import { X, CircleAlert, Timer, Dog } from 'lucide-svelte';
-	import BaseCard from '$lib/components/ui/BaseCard.svelte';
+	import { X, Timer } from 'lucide-svelte';
+	import PageContainer from '$lib/components/ui/PageContainer.svelte';
+	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import ErrorState from '$lib/components/ui/ErrorState.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
-	import Header from '$lib/components/ui/Header.svelte';
 
 	interface Card {
 		id: string; // 単語のID（ペア判定用）
@@ -151,24 +152,16 @@
 	$: enCards = cards.filter((c) => c.type === 'en');
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-12">
-	<Header />
-
-	<main class="max-w-4xl mx-auto px-6 py-10">
-		{#if gameStatus === 'loading'}
-			<div class="flex flex-col items-center justify-center py-40">
-				<Dog size={32} color="#55D5DD" class="animate-spin" />
-				<p class="mt-4 font-bold text-[#55D5DD]">カードを並べています...</p>
-			</div>
-		{:else if gameStatus === 'error'}
-			<BaseCard className="text-center">
-				<CircleAlert size={60} color="#FF5555" class="mx-auto" />
-				<h2 class="my-4 text-2xl font-bold text-slate-800">単語が足りません</h2>
-				<p class="mb-8 text-slate-500">カルタを始めるには最低3単語の登録が必要です。</p>
-				<CustomButton variant="primary" on:click={() => goto('/extract')}>
-					単語を抽出する
-				</CustomButton>
-			</BaseCard>
+<PageContainer showHeader={true} className="pb-12">
+	{#if gameStatus === 'loading'}
+		<LoadingSpinner message="カードを並べています..." />
+	{:else if gameStatus === 'error'}
+		<ErrorState
+			title="単語が足りません"
+			message="カルタを始めるには最低3単語の登録が必要です。"
+			buttonText="単語を抽出する"
+			onButtonClick={() => goto('/extract')}
+		/>
 		{:else}
 			<div class="mb-6 flex items-center justify-between">
 				<a href="/">
@@ -244,7 +237,7 @@
 			</div>
 		{/if}
 	</main>
-</div>
+</PageContainer>
 
 <style>
 	:global(.animate-shake) {

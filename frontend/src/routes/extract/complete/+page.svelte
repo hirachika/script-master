@@ -56,12 +56,12 @@
 			>
 				<Gamepad2 slot="icon" size={32} />
 				<div slot="action" class="flex justify-center gap-3">
-					<CustomButton variant="primary" on:click={() => (window.location.href = '/games/quiz')}>
+					<CustomButton variant="primary" on:click={() => goto('/games/quiz')}>
 						<Target size={24} class="mr-1" /> 4択クイズ
 					</CustomButton>
 					<CustomButton
 						variant="secondary"
-						on:click={() => (window.location.href = '/games/karuta')}
+						on:click={() => goto('/games/karuta')}
 					>
 						<LayoutGrid size={24} class="mr-1" /> 単語カルタ
 					</CustomButton>
@@ -70,7 +70,7 @@
 		</div>
 
 		<div in:fly={{ y: 20, delay: 700, duration: 600 }}>
-			<CustomButton variant="outline" on:click={() => (window.location.href = '/')}>
+			<CustomButton variant="outline" on:click={() => goto('/')}>
 				<House size={24} class="mr-1" /> ホームに戻る
 			</CustomButton>
 		</div>
