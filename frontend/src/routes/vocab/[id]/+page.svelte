@@ -1,13 +1,13 @@
 <script lang="ts">
-	import Header from '$lib/components/ui/Header.svelte';
+	import { BookOpen, PenLine, Lightbulb, Repeat, Trash2, ArrowLeft } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { vocabStore, vocabActions } from '$lib/stores/vocabStore';
 	import BaseCard from '$lib/components/ui/BaseCard.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
+	import Header from '$lib/components/ui/Header.svelte';
 	import SpeakButton from '$lib/components/ui/SpeakButton.svelte';
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import { BookOpen, PenLine, Lightbulb, Repeat, Trash2, ArrowLeft } from 'lucide-svelte';
-	import { vocabStore, vocabActions } from '$lib/stores/vocabStore';
-	import { goto } from '$app/navigation';
 
 	const id = $page.params.id;
 	// IDに一致する単語を検索
@@ -43,7 +43,7 @@
 				<BaseCard className="text-center mb-4">
 					<div class="mb-8">
 						<SpeakButton text={word.english} size="lg" color="red" className="mx-auto" />
-						<h1 class="text-4xl font-black tracking-normal text-slate-800 md:text-5xl">
+						<h1 class="my-2 text-4xl font-black tracking-normal text-slate-800 md:text-5xl">
 							{word.english}
 						</h1>
 						{#if word.phonetic}
