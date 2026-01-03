@@ -1,11 +1,17 @@
-<script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
+<script>import "../app.css";
+import favicon from '$lib/assets/favicon.svg';
+import { onMount } from 'svelte';
+	import { vocabActions } from '$lib/stores/vocabStore';
 
-	let { children } = $props();
-</script>
+	onMount(() => {
+		// 起動時に期限切れデータをクリーンアップ
+		vocabActions.clearExpired();
+	});
+
+let { children } = $props();</script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="{favicon}" />
 </svelte:head>
 
 {@render children()}

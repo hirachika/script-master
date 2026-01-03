@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { ArrowLeft, CircleAlert, Timer, Dog } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { vocabStore } from '$lib/stores/vocabStore';
+	import { X, CircleAlert, Timer, Dog } from 'lucide-svelte';
 	import BaseCard from '$lib/components/ui/BaseCard.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
 	import Header from '$lib/components/ui/Header.svelte';
@@ -172,7 +172,7 @@
 		{:else}
 			<div class="mb-6 flex items-center justify-between">
 				<a href="/">
-					<ArrowLeft size={20} />
+					<X size={24} class="mr-1" />
 				</a>
 				<div class="flex gap-1">
 					<Timer size={24} color="#55D5DD" />

@@ -70,24 +70,19 @@
 				<p class="mt-4 font-bold text-[#55D5DD]">クイズを準備しています...</p>
 			</div>
 		{:else if questions.length === 0}
-			<BaseCard glass={true}>
-				<CircleAlert class="w-16 h-16 text-slate-300 mx-auto mb-4" />
-				<h2 class="text-2xl font-bold text-slate-800 mb-2">単語が足りません</h2>
-				<p class="text-slate-500 mb-8">クイズを始めるには最低4単語の登録が必要です。</p>
-				<button
-					on:click={() => goto('/extract')}
-					class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all"
-				>
+			<BaseCard className="text-center">
+				<CircleAlert size={60} color="#FF5555" class="mx-auto" />
+				<h2 class="my-4 text-2xl font-bold text-slate-800">単語が足りません</h2>
+				<p class="mb-8 text-slate-500">クイズを始めるには最低4単語の登録が必要です。</p>
+				<CustomButton variant="primary" on:click={() => goto('/extract')}>
 					単語を抽出する
-				</button>
+				</CustomButton>
 			</BaseCard>
-
-			<p class="text-center">まだ学習履歴がありません。最初のスクリプトを読み込みましょう！</p>
 		{:else if currentQuestion}
 			<div class="mb-12 flex items-center gap-6">
-				<button on:click={() => goto('/')} class="text-gray-400 hover:text-gray-600">
+				<a href="/">
 					<X size={24} class="mr-1" />
-				</button>
+				</a>
 				<div class="h-3 flex-grow overflow-hidden rounded-full bg-gray-200">
 					<div
 						class="h-full bg-[#FF5555] transition-all duration-500"
