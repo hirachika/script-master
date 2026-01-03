@@ -22,22 +22,22 @@
 	<div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 		<div class="flex items-center gap-2">
 			<a href="/" class="flex items-center gap-2 group">
-				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF5555] text-white shadow-sm group-hover:rotate-3 transition-transform">
+				<div
+					class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF5555] text-white shadow-sm group-hover:rotate-3 transition-transform"
+				>
 					<span class="text-xl font-bold">S</span>
 				</div>
-				<span class="text-xl font-bold tracking-tight text-[#FF5555]">Script Master</span>
+				<span class="text-xl font-bold tracking-nomal text-[#FF5555]">Script Master</span>
 			</a>
 		</div>
-
-
 
 		{#if showUserMenu}
 			<div class="hidden md:flex md:items-center md:gap-6">
 				<div class="relative">
-					<p class="text-2 text-amber-700 font-bold tracking-wide">
+					<p class="text-2 text-amber-700 font-bold tracking-nomal">
 						⚠️ Data stored for 7 days locally
 					</p>
-					<!-- <button 
+					<!-- <button
 						on:click={toggleMenu}
 						class="flex items-center gap-3 rounded-full border border-gray-200 bg-white p-1 pr-3 shadow-sm hover:shadow-md transition-all active:scale-95"
 					>
@@ -48,18 +48,24 @@
 					</button> -->
 
 					{#if isMenuOpen}
-						<div 
+						<div
 							class="absolute right-0 mt-2 w-48 origin-top-right rounded-2xl bg-white p-2 shadow-xl border border-gray-100 ring-1 ring-black ring-opacity-5 focus:outline-none"
 							transition:slide={{ duration: 150 }}
 						>
-							<a href="/profile" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+							<a
+								href="/profile"
+								class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+							>
 								<User class="h-4 w-4" /> プロフィール
 							</a>
-							<a href="/settings" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+							<a
+								href="/settings"
+								class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+							>
 								<Settings class="h-4 w-4" /> 設定
 							</a>
 							<div class="my-1 border-t border-gray-100"></div>
-							<!-- <button 
+							<!-- <button
 								on:click={handleLogout}
 								class="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50">
 								<LogOut class="h-4 w-4" /> ログアウト
@@ -70,10 +76,7 @@
 			</div>
 
 			<div class="md:hidden">
-				<button 
-					on:click={() => isMobileMenuOpen = !isMobileMenuOpen}
-					class="p-2 text-gray-600"
-				>
+				<button on:click={() => (isMobileMenuOpen = !isMobileMenuOpen)} class="p-2 text-gray-600">
 					<Menu class="h-6 w-6" />
 				</button>
 			</div>
@@ -83,9 +86,17 @@
 	{#if isMobileMenuOpen}
 		<div class="md:hidden border-t border-gray-100 bg-white px-4 py-4" transition:slide>
 			<div class="space-y-2">
-				<a href="/profile" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">プロフィール</a>
-				<a href="/settings" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">設定</a>
-				<!-- <button 
+				<a
+					href="/profile"
+					class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50"
+					>プロフィール</a
+				>
+				<a
+					href="/settings"
+					class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50"
+					>設定</a
+				>
+				<!-- <button
 					on:click={handleLogout}
 					class="block w-full text-left rounded-lg px-3 py-2 text-base font-medium text-red-600 hover:bg-red-50">
 					ログアウト
