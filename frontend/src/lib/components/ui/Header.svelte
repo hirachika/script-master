@@ -75,11 +75,11 @@
 				</div>
 			</div>
 
-			<div class="md:hidden">
+			<!-- <div class="md:hidden">
 				<button on:click={() => (isMobileMenuOpen = !isMobileMenuOpen)} class="p-2 text-gray-600">
 					<Menu class="h-6 w-6" />
 				</button>
-			</div>
+			</div> -->
 		{/if}
 	</div>
 
