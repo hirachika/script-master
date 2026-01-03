@@ -14,7 +14,7 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
 	<Header showUserMenu={true} />
 
-	<main class="max-w-4xl mx-auto px-6 py-10">
+	<main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
 		<section class="text-center leading-tight mb-6">
 			<h1 class="text-[32px] sm:text-[48px] font-bold text-gray-900 mb-4">
 				あなたの<span class="text-red-500">"読みたい"</span>が、
@@ -26,11 +26,11 @@
 			</p>
 		</section>
 
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
 			<ActionCard
 				variant="red"
 				title="新しく単語を抽出"
-				description="好きな英文から単語を自動で抽出します"
+				description="映画、ニュース、小説、好きな英文を貼り付けて単語を自動で抽出します"
 			>
 				<FileText slot="icon" size={32} />
 				<div slot="action">

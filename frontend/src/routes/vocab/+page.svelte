@@ -32,13 +32,13 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-12">
 	<Header />
 
-	<main class="max-w-4xl mx-auto px-6 py-10">
-		<div class="mb-8 flex items-center gap-4">
+	<main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+		<div class="mb-4 sm:mb-8 flex items-center gap-2 sm:gap-4">
 			<a href="/">
 				<ArrowLeft size={20} />
 			</a>
 			<div>
-				<h1 class="font-sans text-2xl font-bold text-gray-900">マイ単語帳</h1>
+				<h1 class="text-lg sm:text-2xl font-bold text-gray-900">マイ単語帳</h1>
 				<p class="mt-2 text-sm">{words.length} 単語登録済み（14日間限定保存）</p>
 			</div>
 		</div>

@@ -15,17 +15,17 @@
 	const iconBgColors = {
 		red: 'bg-red-50 text-red-500',
 		blue: 'bg-blue-50 text-blue-500',
-		teal: 'bg-teal-50 text-[#55D5DD]'
+		teal: 'bg-teal-50 text-teal-500'
 	};
 </script>
 
 <div
 	in:fade={{ duration: 400 }}
-	class="flex flex-col items-center gap-2 sm:gap-4 rounded-2xl border border-gray-100 bg-white p-6 md:p-8 text-center shadow-sm transition-all hover:shadow-md {borderColors[
+	class="flex flex-col items-center gap-2 sm:gap-4 rounded-2xl border-2 border-gray-100 bg-white p-6 text-center transition-all {borderColors[
 		variant
 	]}"
 >
-	<div class="flex h-16 w-16 items-center justify-center rounded-full {iconBgColors[variant]}">
+	<div class="p-3 sm:p-4 rounded-full {iconBgColors[variant]}">
 		<slot name="icon" />
 	</div>
 
