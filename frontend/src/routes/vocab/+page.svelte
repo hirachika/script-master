@@ -70,14 +70,14 @@
 								? 'text-green-500 bg-green-50'
 								: 'text-slate-300 bg-slate-50'}"
 						>
-							習得済み<Check size={24} class="mr-1" />
+							習得済み<Check size={24} />
 						</button>
 
 						<button
 							on:click={() => handleDelete(word.id)}
 							class="py-2 px-3 flex items-center text-slate-300 hover:text-red-500 transition-colors"
 						>
-							<Trash2 size={24} class="mr-1" />
+							<Trash2 size={24} />
 						</button>
 					</div>
 				</BaseCard>

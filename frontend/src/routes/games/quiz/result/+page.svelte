@@ -47,10 +47,10 @@
 
 			<div class="grid grid-cols-2 gap-4">
 				<CustomButton variant="outline" on:click={() => goto('/games/quiz')}>
-					<RotateCcw size={24} class="mr-1" /> もう一度
+					<RotateCcw size={24} /> もう一度
 				</CustomButton>
 				<CustomButton variant="primary" on:click={() => goto('/')}>
-					<House size={24} class="mr-1" /> ホームに戻る
+					<House size={24} /> ホームに戻る
 				</CustomButton>
 			</div>
 		</div>

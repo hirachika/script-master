@@ -15,22 +15,18 @@
 	<Header showUserMenu={true} />
 
 	<main class="max-w-4xl mx-auto px-6 py-10">
-		<section class="text-center mb-8">
-			<h1 class="text-5xl font-bold text-gray-900 mb-4 leading-[1.25]">
-				あなたの<span class="text-[#FF5555]">"読みたい"</span>が、
-				<br />そのまま<span class="text-[#FF5555]">英語力</span>になる！
+		<section class="text-center leading-tight mb-6">
+			<h1 class="text-[32px] sm:text-[48px] font-bold text-gray-900 mb-4">
+				あなたの<span class="text-red-500">"読みたい"</span>が、
+				<br />そのまま<span class="text-red-500">英語力</span>になる！
 			</h1>
-			<p class="text-lg">
-				映画、ニュース、小説。好きな英文を貼り付けるだけで、
+			<p class="text-[14px] sm:text-[18px]">
+				映画、ニュース、小説。<br class="none sm:block" />好きな英文を貼り付けるだけで、
 				<br />その中の重要単語をゲーム感覚でマスターできます。
 			</p>
 		</section>
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-			<!-- <div
-			class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full mb-12"
-			in:fly={{ y: 20, delay: 500, duration: 600 }}
-		> -->
 			<ActionCard
 				variant="red"
 				title="新しく単語を抽出"

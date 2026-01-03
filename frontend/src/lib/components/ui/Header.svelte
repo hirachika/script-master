@@ -27,7 +27,7 @@
 				>
 					<span class="text-xl font-bold">S</span>
 				</div>
-				<span class="text-xl font-bold tracking-nomal text-[#FF5555]">Script Master</span>
+				<span class="text-xl font-bold tracking-nomal text-red-500">Script Master</span>
 			</a>
 		</div>
 

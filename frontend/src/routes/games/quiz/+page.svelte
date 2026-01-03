@@ -75,7 +75,7 @@
 	{:else if currentQuestion}
 		<div class="mb-12 flex items-center gap-6">
 			<a href="/">
-				<X size={24} class="mr-1" />
+				<X size={24} />
 			</a>
 			<div class="h-3 flex-grow overflow-hidden rounded-full bg-gray-200">
 				<div
@@ -128,7 +128,7 @@
 				<div in:fade={{ duration: 200 }} class="mt-8">
 					<CustomButton variant="primary" size="lg" on:click={nextQuestion}>
 						{currentIndex < questions.length - 1 ? '次の問題へ' : '結果を見る'}
-						<ChevronRight size={24} class="mr-1" />
+						<ChevronRight size={24} />
 					</CustomButton>
 				</div>
 			{/if}

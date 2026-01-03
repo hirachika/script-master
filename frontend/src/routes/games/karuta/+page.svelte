@@ -164,7 +164,7 @@
 	{:else}
 		<div class="mb-6 flex items-center justify-between">
 			<a href="/">
-				<X size={24} class="mr-1" />
+				<X size={24} />
 			</a>
 			<div class="flex gap-1">
 				<Timer size={24} color="#55D5DD" />
