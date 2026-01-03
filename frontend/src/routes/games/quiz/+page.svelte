@@ -5,11 +5,11 @@
 	import { onMount } from 'svelte';
 	import { vocabStore } from '$lib/stores/vocabStore';
 	import { X, ChevronRight } from 'lucide-svelte';
-	import PageContainer from '$lib/components/ui/PageContainer.svelte';
-	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
-	import ErrorState from '$lib/components/ui/ErrorState.svelte';
 	import BaseCard from '$lib/components/ui/BaseCard.svelte';
 	import CustomButton from '$lib/components/ui/CustomButton.svelte';
+	import ErrorState from '$lib/components/ui/ErrorState.svelte';
+	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import PageContainer from '$lib/components/ui/PageContainer.svelte';
 	import SpeakButton from '$lib/components/ui/SpeakButton.svelte';
 
 	let currentIndex = 0;

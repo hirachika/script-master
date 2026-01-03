@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	import { fly } from 'svelte/transition';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import { RotateCcw, House } from 'lucide-svelte';
+	import CustomButton from '$lib/components/ui/CustomButton.svelte';
 	import PageContainer from '$lib/components/ui/PageContainer.svelte';
 	import ResultCard from '$lib/components/ui/ResultCard.svelte';
 	import WordListCard from '$lib/components/ui/WordListCard.svelte';
-	import CustomButton from '$lib/components/ui/CustomButton.svelte';
 
 	let accuracy = 0;
 	let message = '';
@@ -41,13 +41,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#F0F9FA] to-[#E0F2F4] pb-12">
 	<PageContainer maxWidth="2xl" showHeader={true}>
 		<div in:fly={{ y: 20, duration: 600 }} class="text-center">
-			<ResultCard 
-				title="Quiz Result" 
-				{message} 
-				scoreValue={accuracy} 
-				scoreUnit="%" 
-				{stars} 
-			/>
+			<ResultCard title="Quiz Result" {message} scoreValue={accuracy} scoreUnit="%" {stars} />
 
 			<WordListCard words={result.words} />
 

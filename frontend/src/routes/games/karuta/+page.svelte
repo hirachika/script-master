@@ -3,10 +3,9 @@
 	import { onMount } from 'svelte';
 	import { vocabStore } from '$lib/stores/vocabStore';
 	import { X, Timer } from 'lucide-svelte';
-	import PageContainer from '$lib/components/ui/PageContainer.svelte';
-	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
 	import ErrorState from '$lib/components/ui/ErrorState.svelte';
-	import CustomButton from '$lib/components/ui/CustomButton.svelte';
+	import LoadingSpinner from '$lib/components/ui/LoadingSpinner.svelte';
+	import PageContainer from '$lib/components/ui/PageContainer.svelte';
 
 	interface Card {
 		id: string; // 単語のID（ペア判定用）

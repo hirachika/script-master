@@ -225,8 +225,24 @@ export async function extractAndTranslate(text: string) {
 		.slice(0, 15);
 
 	const wordPromises = rawWords.map(async (word) => {
-		// 翻訳。文脈がないと誤訳しやすいため、ヒントを与える
+		// 翻訳
 		const japanese = await translateWord(word);
+
+		// 例文と発音記号を取得（並列実行）
+		const [exampleData, phoneticData] = await Promise.all([
+			getExampleAndTranslation(word).catch(() => ({ en: "", ja: "" })),
+			// 辞書APIから発音記号を取得
+			(async () => {
+				try {
+					const dictUrl = `${API_CONFIG.dictionaryUrl}/en/${word}`;
+					const dictRes = await fetchWithRetry(dictUrl);
+					const dictData = await dictRes.json() as DictionaryApiResponse;
+					return dictData[0]?.phonetic || dictData[0]?.phonetics?.[0]?.text || "";
+				} catch {
+					return "";
+				}
+			})()
+		]);
 
 		const wordDoc = nlp(word);
 		let pos = 'Word';
@@ -240,9 +256,9 @@ export async function extractAndTranslate(text: string) {
 			japanese: japanese,
 			pos: pos,
 			selected: true,
-			phonetic: "",
-			example: "",
-			exampleJapanese: "",
+			phonetic: phoneticData,
+			example: exampleData.en,
+			exampleJapanese: exampleData.ja,
 			synonyms: ""
 		};
 	});

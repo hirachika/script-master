@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { FileText, BookOpen, Gamepad2, LayoutGrid, Target } from 'lucide-svelte';
-	import ActionCard from '$lib/components/ui/ActionCard.svelte';
-	import BaseCard from '$lib/components/ui/BaseCard.svelte';
-	import CustomButton from '$lib/components/ui/CustomButton.svelte';
-	import Header from '$lib/components/ui/Header.svelte';
 	import { goto } from '$app/navigation';
 	import { vocabStore } from '$lib/stores/vocabStore';
+	import ActionCard from '$lib/components/ui/ActionCard.svelte';
+	import CustomButton from '$lib/components/ui/CustomButton.svelte';
+	import Header from '$lib/components/ui/Header.svelte';
+
 	// ストアの値をリアクティブに購読
-	$: words = $vocabStore;
 	$: hasWords = words.length > 0;
+	$: words = $vocabStore;
 </script>
 
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
@@ -75,14 +75,5 @@
 				</div></ActionCard
 			>
 		</div>
-
-		<section class="mt-20">
-			<h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-				<FileText size={24} class="mr-1" /> 最近の学習
-			</h3>
-			<BaseCard glass={true}>
-				<p class="text-center">まだ学習履歴がありません。最初のスクリプトを読み込みましょう！</p>
-			</BaseCard>
-		</section>
 	</main>
 </div>
