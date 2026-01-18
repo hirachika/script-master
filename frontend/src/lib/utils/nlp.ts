@@ -90,11 +90,49 @@ async function fetchWithRetry(
 }
 
 /**
- * 単語を翻訳する関数（エラーハンドリング強化版）
+ * 単語を正規化（原形に変換）
  */
-export async function translateWord(word: string): Promise<string> {
+function normalizeWord(word: string): string {
+	const doc = nlp(word);
+	// 動詞を原形に、名詞を単数形に
+	if (doc.verbs().length > 0) {
+		return doc.verbs().toInfinitive().text() || word;
+	}
+	if (doc.nouns().length > 0) {
+		return doc.nouns().toSingular().text() || word;
+	}
+	return word;
+}
+
+/**
+ * 固有名詞かどうかを判定
+ */
+function isProperNoun(word: string): boolean {
+	// 大文字で始まる単語は固有名詞の可能性が高い
+	const doc = nlp(word);
+	return doc.people().length > 0 || doc.places().length > 0 || /^[A-Z]/.test(word);
+}
+
+/**
+ * 単語を翻訳する関数（品質改善版）
+ */
+export async function translateWord(word: string, context?: string): Promise<string> {
 	try {
-		const url = `${API_CONFIG.translationUrl}?q=${encodeURIComponent(word)}&langpair=en|ja`;
+		// 固有名詞の場合はそのまま返す
+		if (isProperNoun(word)) {
+			console.info(`固有名詞のためスキップ: ${word}`);
+			return word;
+		}
+
+		// 単語を正規化（原形に変換）
+		const normalizedWord = normalizeWord(word);
+		
+		// 文脈がある場合は文脈付きで翻訳（品質向上）
+		const queryText = context 
+			? `${normalizedWord} (context: ${context.slice(0, 50)})`
+			: normalizedWord;
+		
+		const url = `${API_CONFIG.translationUrl}?q=${encodeURIComponent(queryText)}&langpair=en|ja`;
 		const response = await fetchWithRetry(url);
 		const data = await response.json() as TranslationApiResponse;
 
@@ -112,17 +150,29 @@ export async function translateWord(word: string): Promise<string> {
 			return '（訳なし）';
 		}
 
-		// MyMemory特有のノイズ（長い説明文や無関係な日本語）をカットする簡易チェック
-		// 単語の翻訳なのに句読点が多い場合は、最初の意味だけを採用する
-		if (translated.includes('。') || translated.includes('、')) {
-			translated = translated.split(/[。、]/)[0];
-		}
+		// クリーンアップ処理
+		// 1. 括弧内のcontext情報を削除
+		translated = translated.replace(/\s*\(context:.*?\)/gi, '');
+		
+		// 2. 句読点や記号（！？など）を削除
+		translated = translated.replace(/[！？。、]/g, '');
+		
+		// 3. 余分な空白を削除
+		translated = translated.trim();
 
-		// 特定の誤訳パターン（"澪"など）が含まれていたら再翻訳かフィルタリング
-		if (translated.includes('澪')) {
-			// 他の翻訳候補（matches）があればそちらを採用するロジック
-			if (data.matches && data.matches.length > 1) {
-				translated = data.matches[1].translation;
+		// 4. matches から最も品質の高い翻訳を選択
+		if (data.matches && data.matches.length > 0) {
+			// match品質が80%以上のものを優先
+			const highQualityMatches = data.matches.filter(m => m.match >= 0.8);
+			if (highQualityMatches.length > 0) {
+				// 最も短くシンプルな翻訳を選択（ノイズが少ない）
+				const simplest = highQualityMatches
+					.map(m => m.translation.replace(/[！？。、]/g, '').trim())
+					.sort((a, b) => a.length - b.length)[0];
+				
+				if (simplest && simplest.length < translated.length) {
+					translated = simplest;
+				}
 			}
 		}
 
@@ -225,16 +275,19 @@ export async function extractAndTranslate(text: string) {
 		.slice(0, 15);
 
 	const wordPromises = rawWords.map(async (word) => {
-		// 翻訳
-		const japanese = await translateWord(word);
+		// 単語を正規化（原形に変換）
+		const normalizedWord = normalizeWord(word);
+		
+		// 元のテキストを文脈として渡して翻訳品質を向上
+		const japanese = await translateWord(normalizedWord, text);
 
-		// 例文と発音記号を取得（並列実行）
+		// 例文と発音記号を取得（並列実行）- 正規化した単語で取得
 		const [exampleData, phoneticData] = await Promise.all([
-			getExampleAndTranslation(word).catch(() => ({ en: "", ja: "" })),
+			getExampleAndTranslation(normalizedWord).catch(() => ({ en: "", ja: "" })),
 			// 辞書APIから発音記号を取得
 			(async () => {
 				try {
-					const dictUrl = `${API_CONFIG.dictionaryUrl}/en/${word}`;
+					const dictUrl = `${API_CONFIG.dictionaryUrl}/en/${normalizedWord}`;
 					const dictRes = await fetchWithRetry(dictUrl);
 					const dictData = await dictRes.json() as DictionaryApiResponse;
 					return dictData[0]?.phonetic || dictData[0]?.phonetics?.[0]?.text || "";
@@ -244,7 +297,7 @@ export async function extractAndTranslate(text: string) {
 			})()
 		]);
 
-		const wordDoc = nlp(word);
+		const wordDoc = nlp(normalizedWord);
 		let pos = 'Word';
 		if (wordDoc.nouns().length) pos = '名詞';
 		if (wordDoc.verbs().length) pos = '動詞';
@@ -252,7 +305,7 @@ export async function extractAndTranslate(text: string) {
 
 		return {
 			id: crypto.randomUUID(),
-			english: word,
+			english: normalizedWord, // 正規化された単語を保存
 			japanese: japanese,
 			pos: pos,
 			selected: true,
