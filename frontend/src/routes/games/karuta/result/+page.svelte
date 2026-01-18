@@ -51,22 +51,22 @@
 <div class="min-h-screen bg-gradient-to-br from-[#F0F9FA] to-[#E0F2F4] pb-12">
 	<PageContainer maxWidth="2xl" showHeader={true}>
 		<div in:fly={{ y: 20, duration: 600 }} class="text-center">
-			<ResultCard 
-				title="Karuta Result" 
-				{message} 
-				scoreValue={formatTime(result.time)} 
-				scoreUnit="" 
-				{stars} 
+			<ResultCard
+				title="Karuta Result"
+				{message}
+				scoreValue={formatTime(result.time)}
+				scoreUnit=""
+				{stars}
 			/>
 
 			<WordListCard words={result.words} />
 
 			<div class="mt-6 grid grid-cols-2 gap-4">
 				<CustomButton variant="outline" on:click={() => goto('/games/karuta')}>
-					<RotateCcw size={24} class="mr-1" /> もう一度
+					<RotateCcw size={24} /> もう一度
 				</CustomButton>
 				<CustomButton variant="primary" on:click={() => goto('/')}>
-					<House size={24} class="mr-1" /> ホームに戻る
+					<House size={24} /> ホームに戻る
 				</CustomButton>
 			</div>
 		</div>

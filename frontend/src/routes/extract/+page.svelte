@@ -59,17 +59,17 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
 	<Header />
 
-	<main class="max-w-4xl mx-auto px-6 py-10">
-		<div class="mb-8 flex items-center gap-4">
+	<main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+		<div class="mb-4 sm:mb-8 flex items-center gap-2 sm:gap-4">
 			<a href="/">
 				<ArrowLeft size={20} />
 			</a>
 			<div>
-				<h1 class="font-sans text-2xl font-bold text-gray-900">スクリプトを読み込む</h1>
+				<h1 class="text-lg sm:text-2xl font-bold text-gray-900">スクリプトを読み込む</h1>
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+		<div class="mx-auto max-w-xl grid grid-cols-1 gap-8">
 			<div class="lg:col-span-2">
 				<textarea
 					bind:value={scriptText}
@@ -87,7 +87,7 @@
 							: 'text-slate-400'}"
 					>
 						{#if errorMessage}
-							<CircleAlert size={18} />
+							<CircleAlert size={20} />
 							<span class="leading-tight">{errorMessage}</span>
 						{:else}
 							<span class="text-xs font-medium uppercase tracking-wider">Ready to analyze</span>
@@ -142,10 +142,10 @@
 						</label>
 					</div>
 
-					<div class="mt-8">
+					<div class="mt-4">
 						<CustomButton
 							variant="primary"
-							className="h-16 w-full text-lg shadow-lg shadow-red-100"
+							size="lg"
 							disabled={!isValid || isExtracting}
 							on:click={handleExtract}
 						>

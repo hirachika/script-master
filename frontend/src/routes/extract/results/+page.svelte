@@ -63,7 +63,7 @@
 					<button
 						on:click={() =>
 							(extractedWords = extractedWords.map((w) => ({ ...w, selected: true })))}
-						class="text-sm text-[#FF5555] font-semibold hover:underline"
+						class="text-sm text-red-500 font-semibold hover:underline"
 					>
 						すべて選択
 					</button>
@@ -114,7 +114,7 @@
 						<h2 class="text-lg font-bold text-gray-900 mb-4">選択中の単語</h2>
 
 						<div class="flex items-end gap-2 mb-6">
-							<span class="text-5xl font-black text-[#FF5555]">{selectedCount}</span>
+							<span class="text-5xl font-black text-red-500">{selectedCount}</span>
 							<span class="text-gray-400 font-medium mb-2">/ {extractedWords.length}</span>
 						</div>
 

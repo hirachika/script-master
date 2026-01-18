@@ -27,7 +27,7 @@
 				>
 					<span class="text-xl font-bold">S</span>
 				</div>
-				<span class="text-xl font-bold tracking-nomal text-[#FF5555]">Script Master</span>
+				<span class="text-xl font-bold tracking-nomal text-red-500">Script Master</span>
 			</a>
 		</div>
 
@@ -75,11 +75,11 @@
 				</div>
 			</div>
 
-			<div class="md:hidden">
+			<!-- <div class="md:hidden">
 				<button on:click={() => (isMobileMenuOpen = !isMobileMenuOpen)} class="p-2 text-gray-600">
 					<Menu class="h-6 w-6" />
 				</button>
-			</div>
+			</div> -->
 		{/if}
 	</div>
 

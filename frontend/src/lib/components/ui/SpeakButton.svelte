@@ -27,8 +27,8 @@
 	};
 
 	const colorStyles = {
-		gray: 'rounded-full bg-gray-50 text-[#FF5555] hover:scale-110',
-		red: 'rounded-full bg-red-50 text-[#FF5555] hover:scale-110'
+		gray: 'rounded-full bg-gray-50 text-red-500 hover:scale-110',
+		red: 'rounded-full bg-red-50 text-red-500 hover:scale-110'
 	};
 
 	const iconSizes = {

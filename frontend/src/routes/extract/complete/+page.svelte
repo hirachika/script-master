@@ -28,7 +28,7 @@
 		<div in:fly={{ y: 20, delay: 300, duration: 600 }}>
 			<h1 class="text-4xl font-black text-gray-900 mb-4">登録完了！</h1>
 			<p class="text-lg text-gray-600 mb-12">
-				<span class="text-[#FF5555] font-bold">{savedCount}個</span> の単語をマスターしましょう。
+				<span class="text-red-500 font-bold">{savedCount}個</span> の単語をマスターしましょう。
 			</p>
 		</div>
 
@@ -57,13 +57,10 @@
 				<Gamepad2 slot="icon" size={32} />
 				<div slot="action" class="flex justify-center gap-3">
 					<CustomButton variant="primary" on:click={() => goto('/games/quiz')}>
-						<Target size={24} class="mr-1" /> 4択クイズ
+						<Target size={24} /> 4択クイズ
 					</CustomButton>
-					<CustomButton
-						variant="secondary"
-						on:click={() => goto('/games/karuta')}
-					>
-						<LayoutGrid size={24} class="mr-1" /> 単語カルタ
+					<CustomButton variant="secondary" on:click={() => goto('/games/karuta')}>
+						<LayoutGrid size={24} /> 単語カルタ
 					</CustomButton>
 				</div></ActionCard
 			>
@@ -71,7 +68,7 @@
 
 		<div in:fly={{ y: 20, delay: 700, duration: 600 }}>
 			<CustomButton variant="outline" on:click={() => goto('/')}>
-				<House size={24} class="mr-1" /> ホームに戻る
+				<House size={24} /> ホームに戻る
 			</CustomButton>
 		</div>
 	</main>

@@ -32,13 +32,13 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-12">
 	<Header />
 
-	<main class="max-w-4xl mx-auto px-6 py-10">
-		<div class="mb-8 flex items-center gap-4">
+	<main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+		<div class="mb-4 sm:mb-8 flex items-center gap-2 sm:gap-4">
 			<a href="/">
 				<ArrowLeft size={20} />
 			</a>
 			<div>
-				<h1 class="font-sans text-2xl font-bold text-gray-900">マイ単語帳</h1>
+				<h1 class="text-lg sm:text-2xl font-bold text-gray-900">マイ単語帳</h1>
 				<p class="mt-2 text-sm">{words.length} 単語登録済み（14日間限定保存）</p>
 			</div>
 		</div>
@@ -70,14 +70,14 @@
 								? 'text-green-500 bg-green-50'
 								: 'text-slate-300 bg-slate-50'}"
 						>
-							習得済み<Check size={24} class="mr-1" />
+							習得済み<Check size={24} />
 						</button>
 
 						<button
 							on:click={() => handleDelete(word.id)}
 							class="py-2 px-3 flex items-center text-slate-300 hover:text-red-500 transition-colors"
 						>
-							<Trash2 size={24} class="mr-1" />
+							<Trash2 size={24} />
 						</button>
 					</div>
 				</BaseCard>

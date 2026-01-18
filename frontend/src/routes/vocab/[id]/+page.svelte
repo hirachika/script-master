@@ -31,7 +31,7 @@
 	<Header />
 
 	{#if word}
-		<main class="max-w-4xl mx-auto px-6 py-10">
+		<main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
 			<button
 				on:click={() => history.back()}
 				class="mb-6 flex items-center gap-2 font-bold text-slate-500 transition-colors hover:text-indigo-600"
