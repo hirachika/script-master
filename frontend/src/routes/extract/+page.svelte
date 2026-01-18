@@ -166,10 +166,12 @@
 					</div>
 				</BaseCard>
 
-				<div class="rounded-2xl bg-blue-100/50 p-4 text-xs leading-relaxed text-blue-700">
-					<p class="font-bold mb-1">💡 ヒント</p>
-					長い文章ほど、文脈を考慮した精度の高い抽出が可能です。30文字以上の英文を入力してください。
-				</div>
+				<BaseCard bgColor="rgba(219, 234, 254, 0.5)" textColor="#1d4ed8" className="text-xs leading-relaxed">
+					<p class="text-[14px] sm:text-[16px] font-bold mb-1">💡 ヒント</p>
+					<p class="text-[12px] sm:text-[14px]">
+						長い文章ほど、文脈を考慮した精度の高い抽出が可能です。30文字以上の英文を入力してください。
+					</p>
+				</BaseCard>
 			</div>
 		</div>
 	</main>
